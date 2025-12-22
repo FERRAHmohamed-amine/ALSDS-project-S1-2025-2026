@@ -1,0 +1,12 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "cSpell.words": [
+        "ferrah",
+        "QWERTYUIOPASDFGHJKLZXCVBNM",
+        "ZITKHARWA"
+    ],
+    "C_Cpp.dimInactiveRegions": false,
+    "glassit.alpha": 240,
+    "glassit.force_sway": true,
+    "glassit.step": 10
+}
