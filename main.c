@@ -4,7 +4,7 @@
 #include "E&D.h"
 #include "UserMan.h"
 #include "secAud&Ana.h"
-
+#include "LogMan&Ana.h"
 
 // Main function making use of the Math and Security Tools Library
 int main() {
