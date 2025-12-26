@@ -6,6 +6,77 @@
 #include "secAud&Ana.h"
 #include "LogMan&Ana.h"
 
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+// Inclusion de vos fichiers d'en-tête (headers)
+#include "encryption.h"
+#include "math_tools.h"
+#include "user_mgmt.h"
+#include "audit.h"
+#include "logs.h"
+
+int main() {
+    int choice;
+
+    do {
+        // Affichage du menu principal selon le sujet
+        printf("\n==============================\n");
+        printf(" SECURITY UTILITY LIBRARY SYSTEM \n");
+        printf("==============================\n");
+        printf("1. Encryption and Decryption Library\n");
+        printf("2. Mathematical and Security Tools\n");
+        printf("3. User Management System\n");
+        printf("4. Security Audit and Analysis\n");
+        printf("5. Log Management and Monitoring\n");
+        printf("6. Help\n");
+        printf("7. About\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                // Appel d'une fonction qui gère le sous-menu de cryptographie
+                subMenuEncryption(); 
+                break;
+            case 2:
+                // Sous-menu mathématiques
+                subMenuMath();
+                break;
+            case 3:
+                // Sous-menu gestion des utilisateurs
+                subMenuUserManagement();
+                break;
+            case 4:
+                // Sous-menu audit de sécurité
+                subMenuSecurityAudit();
+                break;
+
+            case 5:
+                // Sous-menu gestion des logs
+                subMenuLogManagement();
+                break;  
+            case 6:
+                // Afficher l'aide
+                displayHelp();
+                break;
+            case 7:
+                // Afficher les informations "À propos"
+                displayAbout();
+                break;
+            case 0:
+                printf("Exiting program...\n");
+                break;
+            default:
+                printf("Invalid choice, try again.\n");
+        }
+    } while(choice != 0);
+
+    return 0;
+}
 // Main function making use of the Math and Security Tools Library
 int main() {
     // ---------- Array Operations ----------
