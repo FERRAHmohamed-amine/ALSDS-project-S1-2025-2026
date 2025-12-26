@@ -1,13 +1,9 @@
-#ifndef MODEXP_H
-#define MODEXP_H
+#ifndef MST_H
+#define MST_H
 
 
 
-struct Matrix{
-int data[10][10];
-int n, p;
-}; 
-
+ 
 // ---------------- Number Functions ----------------
 
 // Check if a number is even
@@ -17,7 +13,7 @@ int isEven(int n);
 int isPRIME(int n);
 
 // Compute the Greatest Common Divisor of a and b
-int GCD(int a, int b);
+int gcd(int a, int b);
 
 // Compute the Least Common Multiple of a and b
 int lcm(int a, int b);
@@ -68,24 +64,23 @@ void sortAscending(int T[], int n);
 
 // ---------------- Data Structures ----------------
 
-// Structure to represent a 2D array 
+struct Matrix{
+int M[100][100];
+int rows;
+int cols;
+}; 
+
 struct Array {
-    int T[100][100];
-    int n;          // Usually size or dimension 
+int T[100][100];
+int n;          // Usually size or dimension 
 };
-
-// Structure to represent a matrix with rows and columns
-struct Matrix {
-    int M[100][100];
-    int rows;
-    int cols;
-};
-
+ 
 // ---------------- Matrix Functions ----------------
 
-// Display contents of struct Array
-void DisplayArray(struct Array A);
-
+// Display contents of struct Matrix
+void DisplayArray(struct Matrix A);
+// Read matrix elements into struct Matrix
+void readMatrix(struct Matrix *A);
 // Add matrices A and B, store result in C
 void addMatrix(struct Matrix *A, struct Matrix *B, struct Matrix *C);
 
@@ -105,4 +100,3 @@ int isSymmetric(struct Matrix A);
 int isIdentityMatrix(struct Matrix A);
 
 #endif 
-// end of MST.h

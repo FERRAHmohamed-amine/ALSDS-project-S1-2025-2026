@@ -2,7 +2,12 @@
 #define MODEXP_H
 
 
-struct Log{
+#define INFO 0
+#define WARNING 1
+#define ERROR 2
+#define EMPTY -1
+
+struct Log {
 char user[20];
 char action[50];
 char date[20];
@@ -33,7 +38,7 @@ int code; // 0 info, 1 warning, 2 error
 //...................................... Sorts by username.
     void sortLogsByUser(struct Log logs[], int n);
 //...................................... Detects anomalies.
-    void detectAnomalies(struct Log logs[], int n);
+    void detectSuspiciousActivity(struct Log logs[], int n, char user[]);
 //...................................... Counts daily connections.
     int countDailyConnections(struct Log logs[], int n, char date[]);
 //...................................... Computes error percentage.
@@ -49,7 +54,7 @@ int code; // 0 info, 1 warning, 2 error
 //...................................... Archives old logs.
     void archiveOldLogs(struct Log logs[], int n, int days);
 //...................................... Displays top frequent errors. 
-    void displayTopFrequentErrors(struct Log logs[], int n, int topN);
+    void displayTopFrequentErrors(struct Log logs[], int n);
     
 //........................................................................end of LogMan&Ana.h
 

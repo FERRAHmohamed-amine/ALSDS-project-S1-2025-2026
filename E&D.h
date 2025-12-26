@@ -1,7 +1,5 @@
-#ifndef MODEXP_H
-#define MODEXP_H
-
-
+#ifndef E_AND_D_H
+#define E_AND_D_H
 
 struct Message{
 char text[200];
@@ -69,7 +67,7 @@ int countCharacter(struct Message m, char c);
 void frequencyAnalysis(struct Message m);
 
 // Calculate coincidence index for message (for cryptanalysis)
-int coincidenceIndex(struct Message m);
+float coincidenceIndex(struct Message m);
 
 
 #endif 

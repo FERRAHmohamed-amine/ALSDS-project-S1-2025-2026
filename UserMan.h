@@ -1,7 +1,23 @@
-#ifndef MODEXP_H
-#define MODEXP_H
+#ifndef USERMAN_H
+#define USERMAN_H
 // Define your User struct in your .c or another header before using these functions
+ 
 
+#define MAX_USERS 100
+
+#define EMPTY2   2
+#define ACTIVE  0
+#define BLOCKED 1
+#define USER    0
+#define ADMIN   1
+
+ struct User{
+char name[20];
+char password[20];
+int role; // 0: user, 1: admin
+int state; // 0: active, 1: blocked 2: empty
+};
+char Max_USERS [20];
 // Initialize an array of users
  void initUsers(struct User users[], int n); 
  // Display all users
@@ -33,7 +49,7 @@
     // Check if string contains lowercase
  int containsLowercase(char str[]); 
    // Check if string contains digit
- int containsDigit(char str[]);
+ int containsDigits(char str[]);
     // Check if string contains symbol
  int containsSymbol(char str[]); 
     // Display user statistics

@@ -3,17 +3,7 @@
 #include "LogMan&Ana.h"
 
 
-#define INFO 0
-#define WARNING 1
-#define ERROR 2
-#define EMPTY -1
-struct Log {
-char user[20];
-char action[50];
-char date[20];
-char time[10];
-int code; // 0 info, 1 warning, 2 error , -1 empty
-};
+
  //...................................... Log Management and Analysis Functions ............................
   
  //...................Initializes log list.
@@ -41,7 +31,7 @@ int code; // 0 info, 1 warning, 2 error , -1 empty
 printf("Log list is full.\n");
      }
     //..................displays all logs
-    void  DisplayLogs(struct Log logs[] , int n){
+    void  displayLogs(struct Log logs[] , int n){
         printf("Logs List : \n ");
         for (int i = 0 ; i < n ; i++){
             if (logs[i].code !=EMPTY){
@@ -110,11 +100,11 @@ printf("Log list is full.\n");
     void showLogStatistics(struct Log logs[], int n){
         int infoCount = 0 , warningCount = 0 , errorCount = 0 ;
         for (int i = 0 ; i < n ; i++){
-            if (logs[i].code == INFO)
+            if (logs[i].code == 0)
             infoCount++ ;
-            else if (logs[i].code == WARNING)
+            else if (logs[i].code == 1)
             warningCount++ ;
-            else if (logs[i].code == ERROR)
+            else if (logs[i].code ==2)
             errorCount++ ;
         }
         printf("Log Statistics : \n");
@@ -124,7 +114,7 @@ printf("Log list is full.\n");
     }
 //...........................Sorts logs by date
    void sortLogsByDate(struct Log logs[], int n){
-    struct log temp ;
+    struct Log temp ;
     for ( int i = 0 ; i < n - 1 ; i++){
          for (int j ; j < n -i-1 ; j++){
               if ( strcmp(logs[j].date , logs[j+1].date) > 0){
@@ -137,7 +127,7 @@ printf("Log list is full.\n");
    }
 //...........................Sorts by username
     void sortLogsByUser(struct Log logs[], int n){
-     struct log temp ;
+     struct Log temp ;
      for ( int i = 0 ; i < n - 1 ; i++){
             for (int j ; j < n -i-1 ; j++){
                   if ( strcmp(logs[j].user , logs[j+1].user) > 0){
@@ -149,14 +139,15 @@ printf("Log list is full.\n");
      }
     }
 //...........................Detects anomalies
-int detectSuspiciousActivity(struct Log logs[], int n, char user[]){
+void detectSuspiciousActivity(struct Log logs[], int n, char user[]){
      for (int i = 0 ; i < n ; i ++ ){
          if (logs[i].code == ERROR &&  strcmp(logs[i].action , "login failed") == 0
               && strcmp(logs[i].user , user) == 0 ){
-             return 1 ; // suspicious activity detected
+             printf("Suspicious activity detected for user %s\n", user);
          }  
-        return 0 ; // no suspicious activity detected
+        return; // no suspicious activity detected
      }
+    printf(" suspicious activity detected for user %s\n", user);
 }
 //...........................counts daily connections
     int countDailyConnections(struct Log logs[], int n, char date[]){
@@ -245,7 +236,7 @@ int detectSuspiciousActivity(struct Log logs[], int n, char user[]){
         }
     }
 //..........................displays top frequent errors.
-        void showTopErrors(struct Log logs[], int n){
+        void displayTopFrequentErrors(struct Log logs[], int n){
         int errorCounts[3] = {0,0,0}; // assuming 3 types of errors
         for (int i = 0 ; i < n ; i++){
             if (logs[i].code == ERROR){
@@ -254,12 +245,10 @@ int detectSuspiciousActivity(struct Log logs[], int n, char user[]){
             else if (logs[i].code == WARNING){
                 errorCounts[1]++ ; 
             }
-            else if (logs[i].code == INFO){
-                errorCounts[2]++ ; 
-            }
         }
         printf("Top Frequent Errors : \n");
-        for (int i = 0 ; i < 3 ; i++){
-            printf("Error Type %d : %d occurrences\n", i, errorCounts[i]);
+            printf("Error  : %d occurrences\n", errorCounts[0]);
+            printf("Warning  : %d occurrences\n", errorCounts[1]);
+           
         }
-    }
+    

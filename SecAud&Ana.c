@@ -1,16 +1,11 @@
 #include<stdio.h>
 #include<string.h>
+#include<stdlib.h>
 #include "secAud&Ana.h"
 
 
 
-struct User {
-    char name[50];
-    char password [20];
-    int score;
-    
 
- };
 
 //......................... counts Uppercase letters in text
 int countUppercase(char text[]){
@@ -88,12 +83,16 @@ int countLines(char text[]) {
     return lines;
 }
 //.....................calculates words in text 
-int countWords(char text []){
-    int word = 0 ;
-    for (int i ; text[i] != '\0' ; i++)
-    if ((text[i] != '' && text[i] != '\n')&&(text[i+1] == '' || text[i+1] ==  '\n' || text[i+1] == '\0'))
-    word++ ;
-return word ;
+int countWords(char text[]) {
+    int word = 0;
+    for (int i = 0; text[i] != '\0'; i++) {
+        // Look for end of a word (non-space followed by space/newline/null)
+        if ((text[i] != ' ' && text[i] != '\n') && 
+            (text[i+1] == ' ' || text[i+1] == '\n' || text[i+1] == '\0')) {
+            word++;
+        }
+    }
+    return word;
 }
 //......................... displays text statistics
 void displayTextStats(char text[]) {
@@ -173,7 +172,7 @@ void displayTextStats(char text[]) {
         return score ;
       }
  //.........................Computes average score
- float averageScore(struct User users[], int n){
+ float averageScore(struct Sec_User users[], int n){
     int totalScore = 0 ; 
      for (int i = 0 ; i < n ; i++){
         totalScore += users[i].score ;     
@@ -181,7 +180,7 @@ void displayTextStats(char text[]) {
      return (float)totalScore / n ;
  }
  //.........................Displays global report.
- void displaySecurityReport(struct User users[], int n){
+ void displaySecurityReport(struct Sec_User users[], int n){
     printf("-------*/Security Report*/-------\n");
     printf("The number of users : %d",n);
     printf("The Average Score : %d", averageScore(users,n));
@@ -191,7 +190,7 @@ void displayTextStats(char text[]) {
     }
  }
  //..........................Counts users with strong passwords.
-  int countStrongUsers(struct User users[], int n){
+  int countStrongUsers(struct Sec_User users[], int n){
     int count = 0 ;
     for (int i = 0 ; i < n ; i++){
         if ( veryStrongPassword(users[i].password)){
@@ -213,7 +212,7 @@ void displayTextStats(char text[]) {
     printf("7. Educate yourself and others about cybersecurity best practices.\n");
  }
  //........................Verifies valid email format.
- int isValidEmail(char email[]){
+ int checkEmailFormat(char email[]){
     int atCount = 0 , dotCount = 0 , Length = textLength(email);
     for (int i = 0 ; i<Length ; i++){
         if( email[i] == '@')
@@ -237,18 +236,16 @@ return 1 ;
         return 1 ; // valid login
     }
 //..........................Generates hexadecimal key.
-void generateHexKey(int length, char key[]){
-     char hexkey ="0123456789"
-                  "ABCDEF"
-                  "abcdef";
-        for (int i = 0 ; i < length ; i++){
-            int index = rand() % (sizeof(hexkey) -1 ) ;
-            key[i] = hexkey[index] ;
-        }
-        key[length] = '\0' ;
+void generateHexKey(int length, char key[]) {
+    char hexkey[] = "0123456789ABCDEFabcdef"; // Added []
+    for (int i = 0; i < length; i++) {
+        int index = rand() % (strlen(hexkey));
+        key[i] = hexkey[index];
+    }
+    key[length] = '\0';
 }
 //.......................... finds top 3 common passwords 
- void top3Passwords(struct User users[], int n){
+ void top3Passwords(struct Sec_User users[], int n){
             char top1[50] = "", top2[50] = "", top3[50] = "";
             int score1 = -1, score2 = -1, score3 = -1;
 
@@ -279,7 +276,7 @@ void generateHexKey(int length, char key[]){
 
 }
 //............................Computes global level.
-float globalSecurityLevel(struct User users[], int n){
+float globalSecurityLevel(struct Sec_User users[], int n){
     if (n==0) return 0 ;
     int score = 0 ;
   for(int i = 0 ; i < n ; i ++){

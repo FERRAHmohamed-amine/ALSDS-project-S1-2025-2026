@@ -1,11 +1,6 @@
 #include<stdio.h>
 #include<string.h>
-
-
-struct Message{
-char text[200];
-int length;
-};
+#include"E&D.h"
 
  // Function to input a message
  void inputMessage(struct Message m[]){

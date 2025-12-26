@@ -1,22 +1,504 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "MST.h" 
+#include <string.h>
+#include<math.h>
 #include "E&D.h"
-#include "UserMan.h"
+#include "LogMan&Ana.h" 
+#include "MST.h" 
+#include "UserMan.h" 
 #include "secAud&Ana.h"
-#include "LogMan&Ana.h"
 
 
+// the function needed in the menu
+void subMenuEncryption(){
 
+    struct Message msg;
+    int choice;
+    int key;
+    int subKey[26];
+    char subKeyInput[27];
 
-#include <stdio.h>
-#include <stdlib.h>
-// Inclusion de vos fichiers d'en-tête (headers)
-#include "encryption.h"
-#include "math_tools.h"
-#include "user_mgmt.h"
-#include "audit.h"
-#include "logs.h"
+    do {
+        printf("\n--- Encryption and Decryption Library ---\n");
+        printf("1. Caesar Cipher (Encrypt)\n");
+        printf("2. Caesar Cipher (Decrypt)\n");
+        printf("3. XOR Cipher (Encrypt/Decrypt)\n");
+        printf("4. Substitution Cipher (Encrypt)\n");
+        printf("5. Substitution Cipher (Decrypt)\n");
+        printf("6. Character Frequency Analysis\n");
+        printf("7. Calculate Coincidence Index\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar(); 
+
+        if (choice >= 1 && choice <= 7) {
+            printf("Enter the message text: ");
+            fgets(msg.text, sizeof(msg.text), stdin);
+            msg.text[strcspn(msg.text, "\n")] = 0; 
+        }
+
+        switch (choice) {
+            case 1:
+                printf("Enter integer key (e.g., 3): ");
+                scanf("%d", &key);
+                encryptCesar(msg, key);
+                break;
+
+            case 2:
+                printf("Enter integer key (e.g., 3): ");
+                scanf("%d", &key);
+                decryptCesar(msg, key);
+                break;
+
+            case 3:
+                printf("Enter XOR key (integer 0-255): ");
+                scanf("%d", &key);
+                encryptXOR(msg, key); 
+                break;
+
+            case 4:
+                printf("Enter 26-letter substitution alphabet: ");
+                scanf("%s", subKeyInput);
+                if (isValidKey(subKeyInput)) {
+                    for(int i=0; i<26; i++) subKey[i] = (subKeyInput[i] >= 'a') ? subKeyInput[i]-32 : subKeyInput[i];
+                    encryptSubstitution(msg, subKey);
+                } else {
+                    printf("Invalid Key! Must be 26 unique letters.\n");
+                }
+                break;
+
+            case 5:
+                printf("Enter the 26-letter alphabet used for encryption: ");
+                scanf("%s", subKeyInput);
+                if (isValidKey(subKeyInput)) {
+                    for(int i=0; i<26; i++) subKey[i] = (subKeyInput[i] >= 'a') ? subKeyInput[i]-32 : subKeyInput[i];
+                    decryptSubstitution(msg, subKey);
+                } else {
+                    printf("Invalid Key!\n");
+                }
+                break;
+
+            case 6:
+                frequencyAnalysis(msg);
+                break;
+
+            case 7:
+                printf("Coincidence Index: %.4f\n", coincidenceIndex(msg));
+                break;
+
+            case 0:
+                printf("Exiting program...\n");
+                break;
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    } while (choice != 0);
+
+}
+
+void subMenuMath() {
+    int choice;
+
+    do {
+        printf("\n--- Math Utility Library ---\n");
+        printf("1. GCD using Euclidean algorithm\n");
+        printf("2. Factorial\n");
+        printf("3. Random integer between min and max\n");
+        printf("4. Sort array in ascending order (Bubble Sort)\n");
+        printf("5. Transpose a matrix\n");
+        printf("6. Check if matrix is symmetric\n");
+        printf("7. Determine 2x2 matrix determinant\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+
+            case 1: {
+                int a, b , c;
+                printf("Enter two integers: ");
+                scanf("%d %d", &a, &b);
+                c = gcd(a,b);
+                printf("GCD(%d, %d) = %d\n", a, b, c);
+                break;
+            }
+
+            case 2: {
+                int n;
+                printf("Enter an integer: ");
+                scanf("%d", &n);
+                printf("%d! = %d\n", n, factorial(n));
+                break;
+            }
+
+            case 3: {
+                int min, max;
+                printf("Enter min and max: ");
+                scanf("%d %d", &min, &max);
+                printf("Random integer: %d\n", randominteger(min, max));
+                break;
+            }
+
+            case 4: {
+                int n, arr[100];
+                printf("Enter array size: ");
+                scanf("%d", &n);
+
+                printf("Enter %d integers:\n", n);
+                for (int i = 0; i < n; i++)
+                    scanf("%d", &arr[i]);
+
+                sortAscending(arr, n);
+
+                printf("Sorted array: ");
+                for (int i = 0; i < n; i++)
+                    printf("%d ", arr[i]);
+                printf("\n");
+                break;
+            }
+
+            case 5: {
+                struct Matrix A, T;
+
+                printf("Enter number of rows and columns: ");
+                scanf("%d %d", &A.rows, &A.cols);
+
+                printf("Enter matrix elements:\n");
+                for (int i = 0; i < A.rows; i++)
+                    for (int j = 0; j < A.cols; j++)
+                        scanf("%d", &A.M[i][j]);
+
+                transposeMatrix(&A, &T);
+
+                printf("Transposed matrix:\n");
+                for (int i = 0; i < T.rows; i++) {
+                    for (int j = 0; j < T.cols; j++)
+                        printf("%d ", T.M[i][j]);
+                    printf("\n");
+                }
+                break;
+            }
+
+            case 6: {
+                struct Matrix A;
+
+                printf("Enter number of rows and columns: ");
+                scanf("%d %d", &A.rows, &A.cols);
+
+                printf("Enter matrix elements:\n");
+                for (int i = 0; i < A.rows; i++)
+                    for (int j = 0; j < A.cols; j++)
+                        scanf("%d", &A.M[i][j]);
+
+                if (isSymmetric(A))
+                    printf("Matrix is symmetric.\n");
+                else
+                    printf("Matrix is not symmetric.\n");
+
+                break;
+            }
+
+            case 7: {
+                int mat[2][2];
+
+                printf("Enter 2x2 matrix elements:\n");
+                for (int i = 0; i < 2; i++)
+                    for (int j = 0; j < 2; j++)
+                        scanf("%d", &mat[i][j]);
+
+                printf("Determinant = %d\n", determinant2x2(mat));
+                break;
+            }
+
+            case 0:
+                printf("Exiting Math Utility...\n");
+                break;
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+
+    } while (choice != 0);
+}
+ 
+
+void subMenuUserManagement() {
+    int choice;
+    struct User users[100];
+    
+
+    initUsers(users,100);
+
+    do {
+        printf("\n--- User Management System ---\n");
+        printf("1. Display all users\n");
+        printf("2. Add a new user\n");
+        printf("3. Delete a user\n");
+        printf("4. Block a user\n");
+        printf("5. Unblock a user\n");
+        printf("6. Change user role\n");
+        printf("7. List admins\n");
+        printf("8. User statistics\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar();
+
+        char name[20];
+
+        switch (choice) {
+
+        case 1:
+            displayUsers(users, 100);
+            break;
+
+        case 2:
+            addUser(users, 100);
+            break;
+
+        case 3:
+            printf("Enter username to delete: ");
+            fgets(name, sizeof(name), stdin);
+            name[strcspn(name, "\n")] = 0;
+            deleteUser(users, 100, name);
+            break;
+
+        case 4:
+            printf("Enter username to block: ");
+            fgets(name, sizeof(name), stdin);
+            name[strcspn(name, "\n")] = 0;
+            blockUser(users, 100, name);
+            break;
+
+        case 5:
+            printf("Enter username to unblock: ");
+            fgets(name, sizeof(name), stdin);
+            name[strcspn(name, "\n")] = 0;
+            unblockUser(users, 100, name);
+            break;
+
+        case 6:
+            printf("Enter username: ");
+            fgets(name, sizeof(name), stdin);
+            name[strcspn(name, "\n")] = 0;
+            changeRole(users, 100, name, 1);
+            break;
+
+        case 7:
+            listAdmins(users, 100);
+            break;
+
+        case 8:
+            userStatistics(users, 100);
+            break;
+
+        case 0:
+            printf("Exiting User Management...\n");
+            break;
+
+        default:
+            printf("Invalid choice!\n");
+        }
+
+    } while (choice != 0);
+}
+
+void subMenuSecurityAudit(){
+    int choice;
+    char buffer[500];
+    char keyBuffer[100];
+
+    // Note: In a real app, you would pass your global users array here
+    // For this example, we'll use a local mock array if needed
+    struct Sec_User auditUsers[MAX_USERS]; 
+    int numUsers = 0; 
+
+    do {
+        printf("\n--- Security Audit and Analysis ---\n");
+        printf("1. Text Statistics (Length, Words, Case)\n");
+        printf("2. Password Strength Checker (Score)\n");
+        printf("3. Generate Random Secure Password\n");
+        printf("4. Generate Hexadecimal Key\n");
+        printf("5. Validate Email Format\n");
+        printf("6. Show General Security Tips\n");
+        printf("7. Global Security Report (Mock Data)\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        
+        if (scanf("%d", &choice) != 1) break;
+        getchar(); // Clear newline
+
+        switch (choice) {
+            case 1:
+                printf("Enter text to analyze: ");
+                fgets(buffer, sizeof(buffer), stdin);
+                buffer[strcspn(buffer, "\n")] = 0;
+                displayTextStats(buffer);
+                break;
+
+            case 2:
+                printf("Enter password to test: ");
+                scanf("%s", buffer);
+                int score = passwordScore(buffer);
+                printf("Password Score: %d/12\n", score);
+                if(veryStrongPassword(buffer)) printf("Status: Very Strong!\n");
+                else printf("Status: Could be stronger.\n");
+                break;
+
+            case 3:
+                printf("Enter desired length: ");
+                int len;
+                scanf("%d", &len);
+                generateRandomPassword(len, buffer);
+                printf("Generated Password: %s\n", buffer);
+                break;
+
+            case 4:
+                printf("Enter key length: ");
+                scanf("%d", &len);
+                generateHexKey(len, keyBuffer);
+                printf("Generated Hex Key: %s\n", keyBuffer);
+                break;
+
+            case 5:
+                printf("Enter email to validate: ");
+                scanf("%s", buffer);
+                if(checkEmailFormat(buffer)) printf("Valid email format.\n");
+                else printf("Invalid email format.\n");
+                break;
+
+            case 6:
+                showSecurityTips();
+                break;
+
+            case 7:
+                // This assumes you have users loaded in your system
+                displaySecurityReport(auditUsers, numUsers);
+                break;
+
+            case 0:
+                printf("Exiting Audit Module...\n");
+                break;
+
+            default:
+                printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+}
+#define INFO 0
+#define WARNING 1
+#define ERROR 2
+#define EMPTY -1
+#define MAX_LOGS 100
+void subMenuLogManagement() {
+
+    struct Log logs[MAX_LOGS];
+    int  logCount = 0;
+    int  choice;
+    char userSearch[20];
+    char user[20];
+    char action[50];
+    char date[20];
+    char time[10];
+    int  code;
+    int c;
+    initLogs(logs, MAX_LOGS);
+
+    do {
+        printf("\n--- Logging Management and Analysis Library ---\n");
+        printf("1. Add a log entry\n");
+        printf("2. Detect anomalies\n");
+        printf("3. Display all logs\n");
+        printf("4. Search logs by user\n");
+        printf("5. Show statistics\n");
+        printf("6. Count daily connections\n");
+        printf("7. Display top frequent errors\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar();  // clear buffer
+
+        switch (choice) {
+
+            case 1:
+                printf("Enter username: ");
+                fgets(user, sizeof(user), stdin);
+                user[strcspn(user, "\n")] = 0;
+                printf("Enter action: ");
+                fgets(action, sizeof(action), stdin);
+                action[strcspn(action, "\n")] = 0;
+                printf("Enter code (0: info, 1: warning, 2: error): ");
+                scanf("%d", &code);
+                addLog(logs, MAX_LOGS, user, action, code);
+                logCount++;
+                break;
+
+            case 2:
+                printf("Enter username to check for anomalies: ");
+                fgets(user, sizeof(user), stdin);
+                user[strcspn(user, "\n")] = 0;
+
+                detectSuspiciousActivity(logs, logCount, user);
+
+                break;
+
+            case 3:
+                displayLogs(logs, logCount);
+                break;
+
+            case 4:
+                printf("Enter username to search: ");
+                fgets(userSearch, sizeof(userSearch), stdin);
+                userSearch[strcspn(userSearch, "\n")] = 0;
+                searchLogsByUser(logs, logCount, userSearch);
+                break;
+
+            case 5:
+                showLogStatistics(logs, logCount);
+                break;
+
+            case 6:
+                c = countDailyConnections(logs, logCount, date);
+                printf("Connections on %s: %d\n", date, c);
+                break;
+
+            case 7:
+                displayTopFrequentErrors(logs, MAX_LOGS);
+                break;
+
+            case 0:
+                printf("Exiting Log Management...\n");
+                break;
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+
+    } while (choice != 0);
+}
+void displayHelp(){
+    printf("\n--- Help ---\n");
+    printf("This program provides various security utilities including:\n");
+    printf("1. Encryption and Decryption tools\n");
+    printf("2. Mathematical and Security Tools\n");
+    printf("3. User Management System\n");
+    printf("4. Security Audit and Analysis\n");
+    printf("5. Log Management and Monitoring\n");
+    printf("Select the desired option from the main menu to access specific functionalities.\n");
+}
+void displayAbout(){
+    printf("\n--- Help ---\n");
+    printf("This program provides various security utilities including:\n");
+    printf("1. Encryption and Decryption tools\n");
+    printf("2. Mathematical and Security Tools\n");
+    printf("3. User Management System\n");
+    printf("4. Security Audit and Analysis\n");
+    printf("5. Log Management and Monitoring\n");
+    printf("Select the desired option from the main menu to access specific functionalities.\n");
+}
+
 
 int main() {
     int choice;
@@ -77,422 +559,5 @@ int main() {
 
     return 0;
 }
-// Main function making use of the Math and Security Tools Library
-int main() {
-    // ---------- Array Operations ----------
-    int arr[5] = {1, 2, 3, 4, 5};
 
-    // Number-related functions
-    printf("isEven(10) = %d\n", isEven(10));
-    printf("isPrime(11) = %d\n", isPrime(11));
-    printf("gcd(24,18) = %d\n", gcd(24,18));
-    printf("lcm(4,6) = %d\n", lcm(4,6));
-    printf("modExp(3,5,7) = %d\n", modExp(3,5,7));
-    printf("factorial(5) = %d\n", factorial(5));
-    printf("sumDigits(12345) = %d\n", sumDigits(12345));
-    printf("reverseNumber(1234) = %d\n", reverseNumber(1234));
-    printf("isPalindromeNumber(1221) = %d\n", isPalindromeNumber(1221));
-    printf("sumDivisors(12) = %d\n", sumDivisors(12));
-    printf("isPerfectNumber(28) = %d\n", isPerfectNumber(28));
-    printf("isArmstrong(153) = %d\n", isArmstrong(153));
-    printf("randominteger(1,10) = %d\n", randominteger(1,10));
-
-    // Array-related functions
-    printf("sumarrays(arr,5) = %d\n", sumarrays(arr,5));
-    printf("averageArray(arr,5) = %.2f\n", averageArray(arr,5));
-    printf("maxArray(arr,5) = %d\n", maxArray(arr,5));
-    printf("minArray(arr,5) = %d\n", minArray(arr,5));
-
-    // Sort array in ascending order
-    sortAscending(arr, 5);
-    printf("Sorted array: ");
-    for(int i = 0; i < 5; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
-
-    // ---------- Matrix Operations ----------
-    // Define Matrix struct
-    struct Matrix {
-        int M[100][100];  // 2D array to store matrix elements
-        int rows;         // Number of rows
-        int cols;         // Number of columns
-    };
-
-    struct Matrix A, B, C;
-
-    // Input matrix A
-    printf("Enter rows and cols of matrix A: ");
-    scanf("%d %d", &A.rows, &A.cols);
-
-    printf("Enter matrix A values:\n");
-    readMatrix(&A);           // Custom function to read matrix elements
-    printf("Matrix A:\n");
-    DisplayMatrix(A);         // Custom function to display matrix
-
-    // Input matrix B
-    printf("Enter rows and cols of matrix B: ");
-    scanf("%d %d", &B.rows, &B.cols);
-
-    printf("Enter matrix B values:\n");
-    readMatrix(&B);
-    printf("Matrix B:\n");
-    DisplayMatrix(B);
-
-    // Add matrices
-    if (A.rows == B.rows && A.cols == B.cols) {
-        addMatrix(&A, &B, &C);   // Custom function to add matrices
-        printf("Result matrix C = (A + B):\n");
-        DisplayMatrix(C);
-    } else {
-        printf("Matrix sizes do not match for addition!\n");
-    }
-
-    // Multiply matrices
-    if (A.cols == B.rows) {
-        multiplyMatrix(&A, &B, &C);  // Custom function to multiply matrices
-        printf("Result matrix C = (A * B):\n");
-        DisplayMatrix(C);
-    } else {
-        printf("Matrix sizes are incompatible for multiplication!\n");
-    }
-    //transpose matrix A
-     struct Matrix T;
-    transposeMatrix(&A, &T);  // Custom function to transpose matrix
-    printf("Transposed Matrix T of A:\n");
-    DisplayMatrix(T);
-    // diterminent of 2x2 matrix
-    if (A.rows == 2 && A.cols == 2) {
-        int det = determinant2x2(A.M);
-        printf("Determinant of matrix A: %d\n", det);
-    } else {
-        printf("Matrix A is not 2x2, cannot compute determinant 2*2 .\n");
-    }
-    // isSymmetric matrix 
-    if (isSymmetric(A)) {
-        printf("Matrix A is symmetric.\n");
-    } else {
-        printf("Matrix A is not symmetric.\n");
-    }
-    // isIdentity matrix
-    if (isIdentityMatrix(A)) {
-        printf("Matrix A is identity.\n");
-    } else {
-        printf("Matrix A is not identity.\n");
-    }
-    
-     //................................................end of MATH AND SECURITY TOOLS LIBRARY ..................................................
-
-
-
-  
-
-//  Main function making use of Encryption and Decryption Library
-
-    struct Message m[200];  // Array of messages 
-    
-    // Example substitution key
-    char key[26] = "QWERTYUIOPASDFGHJKLZXCVBNM"; 
-
-    // --- Input and display message ---
-    inputMessage(&m[0]);  // Input message
-    printf("Original message:\n");
-    displayMessage(m[0]);
-
-    // --- Convert message to uppercase ---
-    toUppercase(m[0]);
-    printf("After converting to uppercase:\n");
-    displayMessage(m[0]);
-
-    // --- Convert message to lowercase ---
-    toLowercase(m[0]);
-    printf("After converting to lowercase:\n");
-    displayMessage(m[0]);
-
-    // --- Reverse the message ---
-    reverseMessage(m[0]);
-    printf("After reversing the message:\n");
-    displayMessage(m[0]);
-
-    // --- Remove spaces ---
-    removeSpaces(m[0]);
-    printf("After removing spaces:\n");
-    displayMessage(m[0]);
-
-    // --- Caesar cipher encryption ---
-    encryptCesar(m[0], 3);
-    printf("After Caesar cipher encryption with key 3:\n");
-    displayMessage(m[0]);
-
-    // --- Caesar cipher decryption ---
-    decryptCesar(m[0], 3);
-    printf("After Caesar cipher decryption with key 3:\n");
-    displayMessage(m[0]);
-
-    // --- XOR cipher encryption ---
-    encryptXOR(m[0], 5);
-    printf("After XOR cipher encryption with key 5:\n");
-    displayMessage(m[0]);
-
-    // --- XOR cipher decryption ---
-    decryptXOR(m[0], 5);
-    printf("After XOR cipher decryption with key 5:\n");
-    displayMessage(m[0]);
-
-    // --- Substitution cipher encryption ---
-    encryptSubstitution(m[0], key);
-    printf("After Substitution cipher encryption:\n");
-    displayMessage(m[0]);
-
-    // --- Substitution cipher decryption ---
-    decryptSubstitution(m[0], key);
-    printf("After Substitution cipher decryption:\n");
-    displayMessage(m[0]);
-
-    // --- Validate substitution key ---
-    if (isValidKey(key)) {
-        printf("The substitution cipher key is valid.\n");
-    } else {
-        printf("The substitution cipher key is invalid.\n");
-    }
-
-    // --- Count occurrences of character 'A' ---
-    int count = countCharacter(m[0], 'A');
-    printf("The character 'A' occurs %d times in the message.\n", count);
-
-    // --- Frequency analysis (function implementation assumed) ---
-    printf("Frequency analysis of the message:\n");
-    frequencyAnalysis(m[0]);
-    //--- Calculate coincidence index ---
-    float index = coincidenceIndex(m[0]);
-    printf("Coincidence index of the message: %.4f\n", index);
-    
-  
-//................................end of ENCRYPTION AND DECRYPTION LIBRARY ..............................................
-
-
-
-//  Main function making use of User management Library
-#define ACTIVE  0
-#define BLOCKED 1
-#define EMPTY   2
-
-struct User {
-    char name[20];
-    char password[20];
-    int role;   // 0: user, 1: admin
-    int state;  // ACTIVE, BLOCKED, EMPTY
-};
-
-
-  
-     struct User users[100];
-     int n = 100; // Current number of users
-
-      // -------Initialize users--------
-     initUsers(users, 100);
-      //-------- Display users----------
-     displayUsers(users, n); 
-      // --------Add a new user----------
-     addUser(users, n);
-      //--------- delete a user----------
-        char nameToDelete[20];
-     DeleteUser(users, n, nameToDelete);
-      //----------  search for a user----
-        char nameToSearch[20];
-        int index = searchUser(users, n, nameToSearch);
-        if (index != -1) {
-            printf("User found at index %d\n", index);
-        } else {
-            printf("User not found\n");
-        }
-        // ............................Change password for a user
-        char nameToChange[20];
-        printf("Enter name of user to change password: ");
-        scanf("%19s", nameToChange);
-        changepassword(users, n, nameToChange);
-        // ............................Check login credentials
-        char loginName[20], loginPass[20];
-        printf("Enter login name: ");
-        scanf("%19s", loginName);
-        printf("Enter login password: ");
-        scanf("%19s", loginPass);
-        if (checkLogin(users, n, loginName, loginPass)) {
-            printf("Login successful.\n");
-        } else {
-            printf("Invalid credentials.\n");
-        }
-        // ............................Check if a password is strong
-        char passwordToCheck[20];
-        printf("Enter password to check strength: ");
-        scanf("%19s", passwordToCheck);
-        if (strongPassword(passwordToCheck)) {
-            printf("The password is strong.\n");
-        } else {
-            printf("The password is weak.\n");
-        }
-        //............................ Block a user
-        char nameToBlock[20];
-        printf("Enter name of user to block: ");
-        scanf("%19s", nameToBlock);
-        blockUser(users, n, nameToBlock);
-        // ...........................Unblock a user
-        char nameToUnblock[20];
-        printf("Enter name of user to unblock: ");
-        scanf("%19s", nameToUnblock);
-        unblockUser(users, n, nameToUnblock);
-        // ............................Change role of a user
-        char nameToChangeRole[20];
-        printf("Enter name of user to change role: ");
-        scanf("%19s", nameToChangeRole);
-        int newRole;
-        printf("Enter new role (0 for user, 1 for admin): ");
-        scanf("%d", &newRole);
-        changeRole(users, n, nameToChangeRole, newRole);
-        // ............................List all admin users
-        listAdmins(users, n);
-        // ............................string length
-        char strToMeasure[100];
-        printf("Enter string to measure length: ");
-        scanf("%99s", strToMeasure);
-        int length = stringLength(strToMeasure);
-        printf("Length of the string: %d\n", length);
-        // ............................Check for uppercase, lowercase, digit, symbol
-        char strToCheck[100];
-        printf("Enter string to check for character types: ");
-        scanf("%99s", strToCheck);
-        containsUppercase(strToCheck);
-        containsLowercase(strToCheck);
-        containsDigit(strToCheck);
-        containsSymbol(strToCheck);
-        // ............................ Display user statistics
-        userStatistics(users, n);
-        // ............................ Save users to file
-        saveUsers(users, n);
-        // ............................ Load users from file
-        loadUsers(users, n);
-        //................................end of USER MANAGEMENT LIBRARY ..............................................
-        
-
-        //...............//  Main function making use of Security Audit and Analysis Library
-
-        struct User {
-    char name[50];
-    char password [20];
-    int score;
-
-    };
-    char text[200];
-     char pass[50];
-     char key [50];
-     n = 50;
-    //........................Counts uppercase letters.
-    printf("Enter text for analysis: ");
-       coutUppercase(text);
-    //........................Counts lowercase letters.
-       countLowercase(text);  
-    //........................Counts digits.
-       countDigits (text);
-    //......................... calculates percentage of Uppercase letters in text
-       percentUppercase(text);
-    //......................... calculates length of text
-       textLength(text);
-    //........................displays text statistics
-        displayTextStats(text);
-    //.........................Checks if password is very strong
-        veryStrongPassword(pass);
-    //.........................Generates  key.
-        generateKey(16, key); 
-    //.........................Verifies hexadecimal format
-        isHexKey(key);
-    //.........................Generates random password.
-        generateRandomPassword(12, pass);
-    //..........................Calculates password score.
-        passwordScore(pass);
-    //.........................Computes average score
-        averageScore(users, n);
-    //.........................Displays global report
-        displaySecurityReport(users, n);
-    //..........................Counts users with strong passwords.
-        countStrongUsers(users, n);
-    //...........................Shows security tips.
-        showSecurityTips();
-    //...........................Verifies valid email format.
-        isValidEmail("ferrahmohamedfrrh@gmail.com");
-    //...........................Verifies login validity.
-        isValidLogin("ferrah", "ZITKHARWA3");
-    //...........................  Generates hexadecimal key.
-        generateHexKey(16, key);
-    //........................... Displays top 3 passwords.
-        top3Passwords(users, n);
-    //........................... Computes global level.
-        globalSecurityLevel(users, n);
-
-
-
-        //....................----------------------------------end of Security audit and analysis lib----------------------...................
-
-
-
-         //...............//  Main function making use of Log management and analysis Library
-
-    struct Log{
-char user[20];
-char action[50];
-char date[20];
-char time[10];
-int code; // 0 info, 1 warning, 2 error
-};
-#define INFO 0
-#define WARNING 1
-#define ERROR 2
-
-struct Log logs[100];
-n = 100 ; // current number of logs
-
-
-//...........................Initializes log list.
-   initLogs(logs, n);
-//...........................adds a log entry
-    addLog(logs, n, "user1", "Login", INFO);
-//...........................displays all logs
-    DisplayLogs(logs, n);
-//...........................searches logs by user
-    searchLogsByUser(logs, n, "user1");
-//..........................searches logs by date
-    searchLogsByDate(logs, n, "20007-05-12");
-//..................counts error entries
-    countErrors(logs, n);
-//..................counts login events
-    countLoginLogs(logs, n);
-//..................counts blocked attempts
-    countBlockedAttempts(logs, n);
-//..................shows statistics
-    showLogStatistics(logs, n);
-//...........................Sorts logs by date
-    sortLogsByDate(logs, n);
-//...........................sorts logs by user 
-    sortLogsByUser(logs,n);
-//...........................Detects anomalies.
-    detectSuspiciousActivity(logs , n , "ferrah");
-//...........................counts daily connections
-   countDailyConnections(logs , n , "2007-05-12");*
-//...........................computes error percentage
-   computeErrorPercentage(logs,n);
-//...........................Exports logs to CSV.
-   exportLogsCSV(logs,n);
-//...........................import logs from CSV
-   importLogsCSV(logs,n);
-//...........................clears all logs
-   clearLogs(logs,n);
-//...........................displays last events
-   displayLastEvents(logs,n,5);
-//...........................archives old logs
-   archiveOldLogs(logs,n,30);
-//...........................displays top frequent errors.
-   showTopErrors(logs,n);
-
-   //--------------------------------------------------------------------------end of Log management and analysis lib----------------------.....................
-
-return 0 ; 
-}
+ 

@@ -4,11 +4,7 @@
 #include "MST.h"      
 
 
-struct Matrix{
-int data[10][10];
-int n, p;
-}; 
-
+ 
 // ------------------- Number Functions -------------------
 
 // Check if a number is even
@@ -79,7 +75,9 @@ int reverseNumber(int n) {
 
 // Check if number is a palindrome
 int isPalindromeNumber(int n) {
-    return n == reverseNumber(n);
+    if (n == reverseNumber(n)) 
+    return 1;
+    return 0;
 }
 
 // Sum of proper divisors
@@ -169,12 +167,7 @@ void sortAscending(int T[], int n) {
 }
 
 // ------------------- Matrix Structures -------------------
-
-struct Matrix {
-    int M[100][100];
-    int rows;
-    int cols;
-};
+ 
 
 // Display a matrix
 void DisplayMatrix(struct Matrix A) {
@@ -261,12 +254,12 @@ int isIdentityMatrix(struct Matrix A) {
     for (int j = 0 ; j < A.rows ; j++ ){
         if (i==j && A.M[i][j] ==1 || i != j && A.M[i][j] == 0){
             return 1 ;
-            else 
+         } else 
             return 0 ;
         }
 
     }
 }
-}
+
 // End of MST.c
  //..................if you want to use this function call it in main.c  .............................................................................. 

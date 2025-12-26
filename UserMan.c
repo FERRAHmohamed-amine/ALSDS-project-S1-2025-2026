@@ -2,25 +2,14 @@
 #include <string.h>
 #include "UserMan.h"
 
-#define EMPTY 2
-#define ACTIVE 0
-#define BLOCKED 1
-#define USER 0
-#define ADMIN 1
 
- struct User{
-char name[20];
-char password[20];
-int role; // 0: user, 1: admin
-int state; // 0: active, 1: blocked 2: empty
-};
    // Initializes user list
  void initUsers(struct User users[], int n){
      for (int i = 0; i < n; i++){
          strcpy(users[i].name, "");
          strcpy(users[i].password , "");
          users[i].role  =  0  ;
-         users[i].state =  0  ;
+         users[i].state =  2  ;
  }
 }
     // Display all users
@@ -40,7 +29,7 @@ int state; // 0: active, 1: blocked 2: empty
     printf("Enter information of new user:\n");
 
     for (int i = 0; i < n; i++) {
-        if (users[i].state == EMPTY ) { // empty slot
+        if (users[i].state == EMPTY2 ) { // empty slot
             printf("Name: ");
             scanf("%19s", users[i].name);
 
@@ -60,7 +49,7 @@ int state; // 0: active, 1: blocked 2: empty
     printf("User list is full.\n");
 }
   // Delete a user by name
-   void DeleteUser(struct User users [] , int n , char name []){
+   void deleteUser(struct User users [] , int n , char name []){
         printf("Enter name of user to delete: ");
         scanf("%19s", name);
         for (int i = 0 ; i < n ; i++ ){
@@ -68,7 +57,7 @@ int state; // 0: active, 1: blocked 2: empty
                 strcpy(users[i].name , "");
                 strcpy(users[i].password , "");
                 users[i].role  =  0  ;
-                users[i].state =  EMPTY  ;
+                users[i].state =  EMPTY2  ;
                 printf("User %s deleted successfully.\n", name);
                 return;
             }
@@ -88,7 +77,7 @@ int state; // 0: active, 1: blocked 2: empty
     }
 
     // Change password for a user by name
-    void changepassword(struct User users [] , int n , char name []){
+    void changePassword(struct User users [] , int n , char name []){
          int index = searchUser(users,n,name);
          if (index != -1) {
             printf("Enter new password for user %s  : ",users[index].name);
@@ -102,7 +91,7 @@ int state; // 0: active, 1: blocked 2: empty
 int checkLogin(struct User users[], int n, char name[], char pass[]) {
     for (int i = 0; i < n; i++) {
         if (strcmp(users[i].name, name) == 0 &&
-            strcmp(users[i].pass, pass) == 0) {
+            strcmp(users[i].password, pass) == 0) {
             return 1;   // login successful
         }
     }
@@ -149,7 +138,7 @@ void unblockUser(struct User users[], int n, char name[]){
     }
 }
 // Change role of a user by name
-void changRole(struct User users[], int n, char name[], int newRole) {
+void changeRole(struct User users[], int n, char name[], int newRole) {
     int index = searchUser (users , n , name);
     if (index == -1) {
         printf("User %s not found.\n", name);
@@ -165,10 +154,10 @@ void changRole(struct User users[], int n, char name[], int newRole) {
     }
 }
 // List all admin users
-void ListAdmins(struct User users [] , int n ){
+void listAdmins(struct User users [] , int n ){
     printf("Admin users List : ");
     for (int i = 0 ; i < n ; i++){
-        if (users[i].role == ADMIN && users[i].state != EMPTY){
+        if (users[i].role == ADMIN && users[i].state != EMPTY2){
             printf("Name = %s", users[i].name);
             printf(" Password = %s", users[i].password);
             printf(" State = %d\n", users[i].state);
@@ -234,7 +223,7 @@ void ListAdmins(struct User users [] , int n ){
     void userStatistics(struct User users [] , int n ){
         int totalUsers = 0 , blockUsers = 0 , adminUsers = 0 ;
         for (int i = 0 ; i < n ; i++){
-            if (users[i].state != EMPTY){
+            if (users[i].state != EMPTY2){
                 totalUsers++ ;
                 if (users[i].state == BLOCKED)
                 blockUsers++ ;
@@ -254,7 +243,7 @@ void ListAdmins(struct User users [] , int n ){
             return;
         }
         for (int i = 0; i < n; i++) {
-            if (users[i].state != EMPTY) {
+            if (users[i].state != EMPTY2) {
                 fprintf(file, "%s %s %d %d\n", users[i].name, users[i].password, users[i].role, users[i].state);
             }
         }
