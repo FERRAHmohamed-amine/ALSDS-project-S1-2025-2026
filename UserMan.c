@@ -18,7 +18,6 @@
        for (int i = 0 ; i < n ; i++ ){
          if (strcmp(users[i].name , "") != 0  ){
              printf("Name =%s ", users[i].name);
-             printf("Password =%s ", users[i].password);
              printf("Role =%d ", users[i].role);
              printf("State =%d \n", users[i].state);
             }

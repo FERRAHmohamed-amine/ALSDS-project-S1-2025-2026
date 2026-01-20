@@ -478,18 +478,21 @@ void subMenuLogManagement() {
 
     } while (choice != 0);
 }
-void displayHelp(){
-    printf("\n--- Help ---\n");
-    printf("This program provides various security utilities including:\n");
-    printf("1. Encryption and Decryption tools\n");
-    printf("2. Mathematical and Security Tools\n");
-    printf("3. User Management System\n");
-    printf("4. Security Audit and Analysis\n");
-    printf("5. Log Management and Monitoring\n");
-    printf("Select the desired option from the main menu to access specific functionalities.\n");
+void displayHelp() {
+    printf("\n==================== PROGRAM HELP ====================\n");
+    printf("HOW TO NAVIGATE:\n");
+    printf("  [Numbers] : Type the number of the menu option and press Enter.\n");
+    printf("  [M]       : Return to the Main Menu from any sub-menu.\n");
+    printf("  [Q/0]     : Securely exit the application.\n");
+    printf("\nCORE CONCEPTS:\n");
+    printf("  - Encryption: Requires a valid key/passphrase to proceed.\n");
+    printf("  - Analysis:   Generates reports in the /output/ directory.\n");
+    printf("  - Logs:       Real-time monitoring of system events.\n");
+    printf("\nNote: Ensure you have sufficient permissions for Option 3 & 4.\n");
+    printf("======================================================\n");
 }
 void displayAbout(){
-    printf("\n--- Help ---\n");
+    printf("\n--- about ---\n");
     printf("This program provides various security utilities including:\n");
     printf("1. Encryption and Decryption tools\n");
     printf("2. Mathematical and Security Tools\n");
