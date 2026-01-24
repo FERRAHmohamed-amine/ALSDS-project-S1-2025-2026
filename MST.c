@@ -252,13 +252,12 @@ int isIdentityMatrix(struct Matrix A) {
     if(A.rows != A.cols) return 0;
     for (int i = 0 ; i < A.rows ; i++ ){
     for (int j = 0 ; j < A.rows ; j++ ){
-        if (i==j && A.M[i][j] ==1 || i != j && A.M[i][j] == 0){
-            return 1 ;
-         } else 
+        if (i==j && A.M[i][j] !=1 || i != j && A.M[i][j] != 0){
             return 0 ;
-        }
-
+         }  
     }
+    }
+    return 1 ;
 }
 
 // End of MST.c

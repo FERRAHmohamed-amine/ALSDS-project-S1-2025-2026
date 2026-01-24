@@ -25,16 +25,16 @@ int isLowercase(char c);
 int isAlphabetic(char c);
 
 // Convert all characters in message to uppercase
-void toUppercase(struct Message m);
+void toUppercase(struct Message *m);
 
 // Convert all characters in message to lowercase
-void toLowercase(struct Message m);
+void toLowercase(struct Message *m);
 
 // Reverse the characters in message
-void reverseMessage(struct Message m);
+void reverseMessage(struct Message *m);
 
 // Remove all spaces from message
-void removeSpaces(struct Message m);
+void removeSpaces(struct Message *m);
 
 // Encrypt message using Caesar cipher with key
 void encryptCesar(struct Message m, int key);

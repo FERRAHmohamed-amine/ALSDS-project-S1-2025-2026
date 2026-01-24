@@ -28,7 +28,7 @@ int code; // 0 info, 1 warning, 2 error
 //...................................... Counts error entries.
     int countErrors(struct Log logs[], int n);
 //...................................... Counts login events.
-    int countLogins(struct Log logs[], int n);
+    int countLoginLogs(struct Log logs[], int n);
 //...................................... Counts blocked attempts.
     int countBlockedAttempts(struct Log logs[], int n);
 //...................................... Shows statistics.
@@ -44,9 +44,9 @@ int code; // 0 info, 1 warning, 2 error
 //...................................... Computes error percentage.
     float computeErrorPercentage(struct Log logs[], int n);
 //...................................... Exports logs to CSV.
-    void exportLogsToCSV(struct Log logs[], int n, char filename[]);
+    void  exportLogsCSV(struct Log logs[], int n);
 //...................................... Imports logs from CSV.
-    void importLogsFromCSV(struct Log logs[], int n, char filename[]);
+    void importLogsCSV(struct Log logs[], int n);
 //...................................... Clears all logs.
     void clearLogs(struct Log logs[], int n);
 //...................................... Displays last events.

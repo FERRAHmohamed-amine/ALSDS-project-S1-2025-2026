@@ -41,7 +41,7 @@
     // verifies email format
  int checkEmailFormat(char email[]);
     // verifies login format 
- int checkLoginFormat(char name[]);
+ int isValidLogin(char name[],char password[] );
     // generates hexadecimal key 
  void generateHexKey(int length, char key[]);
     //  finds top 3 common passwords 

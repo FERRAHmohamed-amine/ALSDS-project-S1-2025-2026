@@ -33,41 +33,42 @@
     return 0 ;
     }
     // Convert all characters in message to uppercase
-    void toUppercase(struct Message m){
-    for(int i=0; m.text[i]!='\0'; i++){
-        if(isLowercase(m.text[i])){
-            m.text[i] = m.text[i] - ('a' - 'A');
+    void toUppercase(struct Message *m){
+    for(int i=0; m->text[i]!='\0'; i++){
+        if(isLowercase(m->text[i])){
+            m->text[i] = m->text[i] - ('a' - 'A');
         }
     }
 }
     // Convert all characters in message to lowercase
-    void toLowercase(struct Message m){
-    for(int i=0; m.text[i]!='\0'; i++){
-        if(isUppercase(m.text[i])){
-            m.text[i] = m.text[i] + ('a' - 'A');
+    void toLowercase(struct Message *m){
+    for(int i=0; m->text[i]!='\0'; i++){
+        if(isUppercase(m->text[i])){
+            m->text[i] = m->text[i] + ('a' - 'A');
         }
     }
+    
 }
-    // Reverse the characters in message
-void reverseMessage(struct Message m){
-    int len = strlen(m.text) ;
-    for (int i = 0 ; i < len / 2 ; i++){
-         char temp = m.text[i] ;
-         m.text[i] = m.text[len - 1 - i] ;
-         m.text[len - 1 - i] = temp ;        
+// Reverse message
+void reverseMessage(struct Message *m){
+    int len = strlen(m->text);
+    for(int i=0; i<len/2; i++){
+        char temp = m->text[i];
+        m->text[i] = m->text[len-1-i];
+        m->text[len-1-i] = temp;
     }
 }
-    // remove all spaces from message 
-    void removeSpaces(struct Message m){
-      int i , j ; 
-    for ( i = 0 ; i < strlen(m.text) ; i++ ){
-        if(m.text[i] == ' ') 
-        for ( j = i ; j < strlen(m.text) ; j++){
-            m.text[j] = m.text[j+1] ; 
-             }
-             i-- ;
+// Remove spaces
+void removeSpaces(struct Message *m){
+    int i=0, j=0;
+    while(m->text[i]!='\0'){
+        if(m->text[i]!=' '){
+            m->text[j++] = m->text[i];
         }
+        i++;
     }
+    m->text[j]='\0';
+}
     // Encrypt message using Caesar cipher with key
     void encryptCesar(struct Message m, int key){
          for (int i = 0 ; m.text[i] != '\0' ; i++ ){

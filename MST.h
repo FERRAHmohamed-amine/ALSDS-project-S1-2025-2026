@@ -10,7 +10,7 @@
 int isEven(int n);
 
 // Check if a number is prime
-int isPRIME(int n);
+int isPrime(int n);
 
 // Compute the Greatest Common Divisor of a and b
 int gcd(int a, int b);
@@ -78,7 +78,7 @@ int n;          // Usually size or dimension
 // ---------------- Matrix Functions ----------------
 
 // Display contents of struct Matrix
-void DisplayArray(struct Matrix A);
+void DisplayMatrix(struct Matrix A);
 // Read matrix elements into struct Matrix
 void readMatrix(struct Matrix *A);
 // Add matrices A and B, store result in C
