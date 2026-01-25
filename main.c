@@ -9,155 +9,195 @@
 #include "secAud&Ana.h"
 
 void subMenuEncryption() {
-    struct Message msg, msg2;
-    int choice;
-    int key;
+    struct Message msg1, msg2;
+    int choice, key;
     int subKey[26];
     char subKeyInput[27];
     char ch;
 
     do {
-        printf("\n--- Encryption and Decryption Library ---\n");
-        printf("1. Caesar Cipher (Encrypt)\n");
-        printf("2. Caesar Cipher (Decrypt)\n");
-        printf("3. XOR Cipher (Encrypt/Decrypt)\n");
-        printf("4. Substitution Cipher (Encrypt)\n");
-        printf("5. Substitution Cipher (Decrypt)\n");
-        printf("6. Character Frequency Analysis\n");
-        printf("7. Calculate Coincidence Index\n");
-        printf("8. Convert to Uppercase\n");
-        printf("9. Convert to Lowercase\n");
-        printf("10. Reverse Message\n");
-        printf("11. Remove Spaces\n");
-        printf("12. Compare Two Messages\n");
-        printf("13. Count a Character\n");
-        printf("14. Input New Message\n");
-        printf("15. Display Current Message\n");
-        printf("0. Exit\n");
+        printf("\n========== Encryption & Decryption Menu ==========\n");
+        printf("1.  Input message\n");
+        printf("2.  Display message\n");
+        printf("3.  Check if character is uppercase\n");
+        printf("4.  Check if character is lowercase\n");
+        printf("5.  Check if character is alphabetic\n");
+        printf("6.  Convert message to uppercase\n");
+        printf("7.  Convert message to lowercase\n");
+        printf("8.  Reverse message\n");
+        printf("9.  Remove spaces from message\n");
+        printf("10. Encrypt message (Caesar cipher)\n");
+        printf("11. Decrypt message (Caesar cipher)\n");
+        printf("12. Encrypt message (XOR cipher)\n");
+        printf("13. Decrypt message (XOR cipher)\n");
+        printf("14. Encrypt message (Substitution cipher)\n");
+        printf("15. Decrypt message (Substitution cipher)\n");
+        printf("16. Validate substitution key\n");
+        printf("17. Compare two messages\n");
+        printf("18. Count character occurrences\n");
+        printf("19. Frequency analysis\n");
+        printf("20. Coincidence index\n");
+        printf("0.  Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-        getchar();   // clear newline
-
-        if (choice >= 1 && choice <= 15 && choice != 12) {
-            printf("Enter the message text: ");
-            fgets(msg.text, sizeof(msg.text), stdin);
-            msg.text[strcspn(msg.text, "\n")] = 0;
-        }
+        getchar(); // clear newline
 
         switch (choice) {
+
             case 1:
-                printf("Enter integer key (e.g., 3): ");
-                scanf("%d", &key);
-                encryptCesar(msg, key);
+                printf("Enter message: ");
+                fgets(msg1.text, sizeof(msg1.text), stdin);
+                msg1.text[strcspn(msg1.text, "\n")] = '\0';
                 break;
 
             case 2:
-                printf("Enter integer key (e.g., 3): ");
-                scanf("%d", &key);
-                decryptCesar(msg, key);
+                displayMessage(msg1);
                 break;
 
             case 3:
-                printf("Enter XOR key (integer 0-255): ");
-                scanf("%d", &key);
-                encryptXOR(msg, key);
+                printf("Enter a character: ");
+                scanf(" %c", &ch);
+                if (isUppercase(ch))
+                    printf("'%c' is uppercase.\n", ch);
+                else
+                    printf("'%c' is NOT uppercase.\n", ch);
                 break;
 
             case 4:
-                printf("Enter 26-letter substitution alphabet: ");
-                scanf("%s", subKeyInput);
-                if (isValidKey(subKeyInput)) {
-                    for (int i = 0; i < 26; i++)
-                        subKey[i] = (subKeyInput[i] >= 'a') ? subKeyInput[i] - 32 : subKeyInput[i];
-                    encryptSubstitution(msg, subKey);
-                } else {
-                    printf("Invalid Key! Must be 26 unique letters.\n");
-                }
+                printf("Enter a character: ");
+                scanf(" %c", &ch);
+                if (isLowercase(ch))
+                    printf("'%c' is lowercase.\n", ch);
+                else
+                    printf("'%c' is NOT lowercase.\n", ch);
                 break;
 
             case 5:
-                printf("Enter the 26-letter alphabet used for encryption: ");
-                scanf("%s", subKeyInput);
-                if (isValidKey(subKeyInput)) {
-                    for (int i = 0; i < 26; i++)
-                        subKey[i] = (subKeyInput[i] >= 'a') ? subKeyInput[i] - 32 : subKeyInput[i];
-                    decryptSubstitution(msg, subKey);
-                } else {
-                    printf("Invalid Key!\n");
-                }
+                printf("Enter a character: ");
+                scanf(" %c", &ch);
+                if (isAlphabetic(ch))
+                    printf("'%c' is alphabetic.\n", ch);
+                else
+                    printf("'%c' is NOT alphabetic.\n", ch);
                 break;
 
             case 6:
-                frequencyAnalysis(msg);
+                toUppercase(&msg1);
+                printf("Updated message: %s\n", msg1.text);
                 break;
 
             case 7:
-                printf("Coincidence Index: %.4f\n", coincidenceIndex(msg));
+                toLowercase(&msg1);
+                printf("Updated message: %s\n", msg1.text);
                 break;
 
             case 8:
-                toUppercase(&msg);
-                printf("Converted to Uppercase: %s\n", msg.text);
+                reverseMessage(&msg1);
+                printf("Reversed message: %s\n", msg1.text);
                 break;
 
             case 9:
-                toLowercase(&msg);
-                printf("Converted to Lowercase: %s\n", msg.text);
+                removeSpaces(&msg1);
+                printf("Without spaces: %s\n", msg1.text);
                 break;
 
             case 10:
-                reverseMessage(&msg);
-                printf("Reversed Message: %s\n", msg.text);
+                printf("Enter Caesar key: ");
+                scanf("%d", &key);
+                encryptCesar(msg1, key);
                 break;
 
             case 11:
-                removeSpaces(&msg);
-                printf("Spaces Removed: %s\n", msg.text);
+                printf("Enter Caesar key: ");
+                scanf("%d", &key);
+                decryptCesar(msg1, key);
                 break;
 
-           case 12:
+            case 12:
+                printf("Enter XOR key: ");
+                scanf("%d", &key);
+                encryptXOR(msg1, key);
+                break;
+
+            case 13:
+                printf("Enter XOR key: ");
+                scanf("%d", &key);
+                decryptXOR(msg1, key);
+                break;
+
+            case 14:
+                printf("Enter 26-letter substitution key: ");
+                scanf("%s", subKeyInput);
+                if (isValidKey(subKeyInput)) {
+                    for (int i = 0; i < 26; i++)
+                        subKey[i] = subKeyInput[i];
+                    encryptSubstitution(msg1, subKey);
+                } else {
+                    printf("Invalid substitution key!\n");
+                }
+                break;
+
+            case 15:
+                printf("Enter 26-letter substitution key: ");
+                scanf("%s", subKeyInput);
+                if (isValidKey(subKeyInput)) {
+                    for (int i = 0; i < 26; i++)
+                        subKey[i] = subKeyInput[i];
+                    decryptSubstitution(msg1, subKey);
+                } else {
+                    printf("Invalid substitution key!\n");
+                }
+                break;
+
+            case 16:
+                printf("Enter 26-letter substitution key: ");
+                scanf("%s", subKeyInput);
+                if (isValidKey(subKeyInput))
+                    printf("Key is valid.\n");
+                else
+                    printf("Key is invalid.\n");
+                break;
+
+           case 17:
     printf("Enter first message: ");
-    fgets(msg.text, sizeof(msg.text), stdin);
-    msg.text[strcspn(msg.text, "\n")] = 0;
+    fgets(msg1.text, sizeof(msg1.text), stdin);
+    msg1.text[strcspn(msg1.text, "\n")] = '\0';
 
     printf("Enter second message: ");
     fgets(msg2.text, sizeof(msg2.text), stdin);
-    msg2.text[strcspn(msg2.text, "\n")] = 0;
+    msg2.text[strcspn(msg2.text, "\n")] = '\0';
 
-    if (compareMessages(msg, msg2))
+    if (compareMessages(msg1, msg2))
         printf("Messages are equal.\n");
     else
         printf("Messages are different.\n");
     break;
 
-            case 13:
+
+            case 18:
                 printf("Enter character to count: ");
                 scanf(" %c", &ch);
-                printf("Count: %d\n", countCharacter(msg, ch));
+                printf("'%c' appears %d times.\n", ch, countCharacter(msg1, ch));
                 break;
 
-            case 14:
-                printf("Enter new message: ");
-                fgets(msg.text, sizeof(msg.text), stdin);
-                msg.text[strcspn(msg.text, "\n")] = 0;
+            case 19:
+                frequencyAnalysis(msg1);
                 break;
 
-            case 15:
-                displayMessage(msg);
+            case 20:
+                printf("Coincidence Index = %.4f\n", coincidenceIndex(msg1));
                 break;
 
             case 0:
-                printf("Exiting program...\n");
+                printf("Exiting menu...\n");
                 break;
 
             default:
-                printf("Invalid choice. Please try again.\n");
+                printf("Invalid choice! Try again.\n");
         }
 
     } while (choice != 0);
 }
-
-
 void subMenuMST() {
     int choice;
     int n, a, b;
