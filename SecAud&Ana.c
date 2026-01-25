@@ -164,7 +164,7 @@ void displayTextStats(char text[]) {
         int  score = 0 ;
         int length = textLength(pass);
         if (length >= 8) score += 2 ;
-        if (length >= 12) score += 2 ;
+        else if (length >= 5) score += 1 ;
         if (countUppercase(pass) > 0) score += 2 ;
         if (countLowercase(pass) > 0) score += 2 ;
         if (countDigits(pass) > 0) score += 2 ;
@@ -247,7 +247,7 @@ void generateHexKey(int length, char key[]) {
 //.......................... finds top 3 common passwords 
  void top3Passwords(struct Sec_User users[], int n){
             char top1[50] = "", top2[50] = "", top3[50] = "";
-            int score1 = -1, score2 = -1, score3 = -1;
+            int score1 = 0, score2 = 0, score3 = 0;
 
 
             for (int i =0 ; i < n ; i++){
