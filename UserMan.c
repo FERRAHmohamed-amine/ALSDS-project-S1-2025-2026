@@ -146,6 +146,7 @@ void changeRole(struct User users[], int n, char name[], int newRole) {
     if (index != -1) {
         if (users[index].role ==  USER && newRole == ADMIN || users[index].role == ADMIN && newRole == USER ) {
             users[index].role = newRole ;
+
             printf("User %s role changed successfully to %d.\n", name, newRole);
         } else {
             printf("Invalid role change for user %s.\n", name);

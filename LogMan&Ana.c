@@ -81,7 +81,7 @@ printf("Log list is full.\n");
     int countLoginLogs(struct Log logs[], int n){
         int count = 0 ;
         for (int i = 0 ; i < n ; i++){
-            if (logs[i].code != EMPTY &&  logs[i].action == "Login"){
+            if (logs[i].code != EMPTY &&  strcmp(logs[i].action , "Login") == 0){
                 count++ ;
             }
         return count ;
@@ -91,7 +91,7 @@ printf("Log list is full.\n");
     int countBlockedAttempts(struct Log logs[], int n){
         int count = 0 ;
         for (int i = 0 ; i < n ; i++){
-            if (logs[i].code != EMPTY &&  logs[i].action == "Blocked"){
+            if (logs[i].code != EMPTY &&  strcmp(logs[i].action ,"Blocked") == 0){
                 count++ ;
             }
         }
