@@ -63,7 +63,8 @@ void removeSpaces(struct Message *m){
     int i=0, j=0;
     while(m->text[i]!='\0'){
         if(m->text[i]!=' '){
-            m->text[j++] = m->text[i];
+            m->text[j] = m->text[i];
+            j++ ;
         }
         i++;
     }
